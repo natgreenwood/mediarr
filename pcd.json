@@ -1,0 +1,25 @@
+{
+  "name": "Mediarr Database",
+  "version": "0.0.1",
+  "description": "Nat's Profilarr Database",
+  "arr_types": [
+    "sonarr"
+  ],
+  "dependencies": {
+    "https://github.com/Dictionarry-Hub/schema": "1.1.0"
+  },
+  "authors": [
+    {
+      "name": "Nathaniel Greenwood"
+    }
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/natgreenwood/mediarr",
+  "links": {
+    "homepage": "https://mediarr.natg.co.uk",
+    "issues": "https://github.com/users/natgreenwood/projects/4/views/1"
+  },
+  "profilarr": {
+    "minimum_version": "2.0.0"
+  }
+}
