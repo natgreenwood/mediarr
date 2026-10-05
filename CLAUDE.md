@@ -79,18 +79,18 @@ SCHEMA=/path/to/schema/ops DB=/tmp/pcd-test.db; rm -f $DB
 
 **Regexes**: `H265` (`[xh][ .]?265|\bHEVC(\b|\d)`) and `H264` (`[xh][ .]?264|\bAVC(\b|\d)`).
 
-**Custom formats** are named `<res> <codec> <size band>`, e.g. `2160p H265 1-2GB` or `1080p H264 0-3GB`. Each requires a codec regex, a resolution and a size. Resolutions: 2160p, 1080p, 720p, 480p. Bands:
+**Custom formats** are named `<res> <codec> <size band>`, e.g. `2160p H265 1-2GB` or `1080p H264 2-3GB`. Each requires a codec regex, a resolution and a size. Resolutions: 2160p, 1080p, 720p, 480p. Bands:
 - H265: `Under 1GB`, then 1GB steps up to `9-10GB`.
-- H264: one band per profile cap: `0-1GB`, `0-2GB`, `0-3GB`, `0-4GB`, `0-5GB`, `0-7GB` and `0-10GB`.
+- H264: `0-1GB`, then 1GB steps up to `9-10GB`, used by the 3GB profile and up. The 2GB profile still uses a single `0-2GB` band.
 
 **Quality profiles**: Nat's Balanced (1GB), (2GB), (3GB), (4GB), (5GB), (7GB) and (10GB). Each one:
 - uses the same quality list: everything enabled except Remux, Unknown, Raw-HD, BR-DISK and the pre-release qualities. The cutoff (`upgrade_until`) is `Bluray-2160p`.
-- only scores formats whose max size is at or below the profile's cap: the H265 bands up to the cap plus the matching `H264 0-<cap>GB`.
-- is scored in steps of 5. The order goes resolution (high to low), then H265 bands smallest first, then H264 last. The lowest score is 5.
+- only scores formats whose max size is at or below the profile's cap: the H265 and H264 bands up to the cap. The 1GB and 2GB profiles use `H264 0-1GB` and `H264 0-2GB`.
+- is scored in steps of 5. The order goes resolution (high to low), then H265 bands smallest first, then H264 bands smallest first. The lowest score is 5.
 - has minimum score 5 and upgrade score increment 10.
-- has an upgrade-until score that equals its top format's score, except the 1GB, 2GB and 3GB profiles, which use 80. Those three predate the rescaling and keep the original 3GB scores (80…5).
+- has an upgrade-until score that equals its top format's score (40 × the cap in GB, e.g. 400 for 10GB), except the 1GB and 2GB profiles, which use 80. Those two predate the rescaling and keep the original scores (80…5).
 
-When adding a new size-capped profile, copy the quality list and settings from the previous one, add the new H265 bands and an `H264 0-<cap>GB` format per resolution, and rescale scores so they step by 5 and end at 5.
+When adding a new size-capped profile, copy the quality list and settings from the previous one, add the new H265 and H264 1GB bands per resolution, and rescale scores so they step by 5 and end at 5.
 
 ## Sonarr / Profilarr Behaviour
 
