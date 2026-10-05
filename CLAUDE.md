@@ -61,7 +61,7 @@ The schema doesn't constrain `custom_format_conditions.type`. The values Profila
 | `source`, `language`, `indexer_flag`, `release_type`, `year` | `condition_<type>s` | `release_type` is Sonarr-only |
 | `quality_modifier` | `condition_quality_modifiers` | Radarr-only, skipped for Sonarr |
 
-All conditions in this repo use `arr_type = 'all'`, `required = 1`.
+All conditions in this repo use `arr_type = 'all'`, `required = 1`. `language` conditions can be negated (`negate = 1`) or set `except_language = 1` (sent to Sonarr as `exceptLanguage`).
 
 ### Validating ops
 
@@ -90,7 +90,9 @@ SCHEMA=/path/to/schema/ops DB=/tmp/pcd-test.db; rm -f $DB
 - has minimum score 5 and upgrade score increment 10.
 - has an upgrade-until score that equals its top format's score (40 × the cap in GB, e.g. 400 for 10GB), except the 1GB and 2GB profiles, which use 80. Those two predate the rescaling and keep the original scores (80…5).
 
-When adding a new size-capped profile, copy the quality list and settings from the previous one, add the new H265 and H264 1GB bands per resolution, and rescale scores so they step by 5 and end at 5.
+**Not English**: a single negated `language` condition on English. It matches releases whose languages don't include English, so multi-language releases with English aren't matched. Scored -1000 in every profile.
+
+When adding a new size-capped profile, copy the quality list and settings from the previous one, add the new H265 and H264 1GB bands per resolution, and rescale scores so they step by 5 and end at 5. Also score `Not English` at -1000.
 
 ## Sonarr / Profilarr Behaviour
 
