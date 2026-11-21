@@ -98,6 +98,8 @@ SCHEMA=/path/to/schema/ops DB=/tmp/pcd-test.db; rm -f $DB
 
 **Not English** (op 121): a single negated `language` condition on English. It matches releases whose languages don't include English, so multi-language releases with English aren't matched. It's scored -1000 in every profile. The penalty must outweigh the highest top score (currently 400), so every non-English release ends up below the minimum of 5. If a profile's top score ever goes above 995, make the penalty bigger.
 
+**Quality definitions** (op 129): one Sonarr config, `Nat's Balanced`, sets minimum sizes to reject samples. Sizes are MB per minute of runtime: 2160p 8, 1080p 4, 720p 3, SD 2. TRaSH Guides' series minimums are too high for the small profiles (e.g. Bluray-1080p needs 2.2GB at 45 minutes). Max and preferred are 0 (unlimited), because the size-band formats enforce the caps. The config must be selected in Profilarr's media management sync for the instance.
+
 When adding a new size-capped profile, copy the quality list and settings from the previous one, add the new H265 and H264 1GB bands per resolution, and rescale scores so they step by 5 and end at 5. Also score `Not English` at -1000.
 
 ## Sonarr / Profilarr Behaviour
