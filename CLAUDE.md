@@ -92,7 +92,7 @@ SCHEMA=/path/to/schema/ops DB=/tmp/pcd-test.db; rm -f $DB
 - uses the same quality list: everything enabled except Remux, Unknown, Raw-HD, BR-DISK and the pre-release qualities. The cutoff (`upgrade_until`) is `Bluray-2160p`.
 - only scores formats whose max size is at or below the profile's cap: the H265 and H264 bands up to the cap. The 1GB and 2GB profiles use `H264 0-1GB` and `H264 0-2GB`.
 - is scored in steps of 5. The order goes resolution (high to low), then H265 bands smallest first, then H264 bands smallest first. The lowest score is 5.
-- has minimum score 5 and upgrade score increment 10.
+- has minimum score 5 and upgrade score increment 5, so a release one size band smaller counts as an upgrade.
 - scores `Not English` at -1000.
 - has an upgrade-until score that equals its top format's score (40 × the cap in GB, e.g. 400 for 10GB), except the 1GB and 2GB profiles, which use 80. Those two predate the rescaling and keep the original scores (80…5).
 
